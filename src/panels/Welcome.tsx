@@ -16,10 +16,10 @@ export const Welcome: FC<IUserProps> = ({fetchedUser}) => {
                {`Привет, ${first_name}!`}
             </Cell>
             <Spacing size={16} />
-            <Headline weight="2" style={{color: '#000000'}}>Создай профессиональное резюме за пару минут!</Headline>
+            <Headline weight="2" style={{color: '#000000'}}>Хочешь создать профессиональное резюме за пару минут?</Headline>
             <Spacing size={8} />
             <Button size="s" mode="primary" onClick={() => router.push('/form')}>
-               Создать резюме
+               Хочу!
             </Button>
          </Group>
          )}

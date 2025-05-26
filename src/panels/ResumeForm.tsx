@@ -1,10 +1,14 @@
 import React, { FC, useEffect, useState } from "react";
 import { IUserProps } from "../types/FetchedUser";
 import { IResumeData } from "../types/ResumeForm";
-import { Button, FormItem, FormLayoutGroup, Group, Headline, Input, Panel, PanelHeader, Select, Spacing, Textarea } from "@vkontakte/vkui";
+import { Button, FormItem, FormLayoutGroup, Group, Headline, IconButton, Input, Panel, PanelHeader, Select, Spacing, Textarea } from "@vkontakte/vkui";
 import { TemplateOptions } from "../constants/TemplateOptions";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { formateDate } from "../utils/formateDate";
+import { Icon24AddOutline, Icon28DeleteOutline } from "@vkontakte/icons";
+import { TArrayFieldValue } from "../types/ArrayFieldValue";
+import { IEducation } from "../types/Education";
+import { IExperiance } from "../types/Experiance";
 
 export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
    const router = useRouteNavigator();
@@ -14,10 +18,10 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
       city: '',
       position: '',
       skills: '',
-      education: '',
-      experience: '',
+      education: [{title: '', details: ''}],
+      experience: [{company: '', details: ''}],
       about: '',
-      portfolio: '',
+      portfolio: [''],
       template: 'minimal'
    });
 
@@ -35,6 +39,34 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, field: keyof IResumeData) => {
       setData ({...data, [field]: e.target.value});
    };
+
+   const handleArrFieldChange = (field: 'education' | 'experience' | 'portfolio', index: number, value: TArrayFieldValue) => {
+      setData((prev) => {
+         const updatedArr = [...prev[field]];
+         if (field === 'portfolio') {
+            updatedArr[index] = value as string;
+         } else {
+            updatedArr[index] = {
+               ...(updatedArr[index] as IEducation | IExperiance),
+               ...(value as object)};
+         }
+         return {...prev, [field]: updatedArr};
+      });
+   };
+
+   const addArrField = (field: 'education' | 'experience' | 'portfolio') => {
+      setData((prev) => ({
+         ...prev,
+         [field]: field === 'portfolio' ? [...prev.portfolio, ''] : field === 'education' ? [...prev.education, {title: '', details: ''}] : [...prev.experience, {company: '', details: ''}]
+      }));
+   };
+
+   const removeArrField = (field: 'education' | 'experience' | 'portfolio', index: number) => {
+      setData((prev) => ({
+         ...prev,
+         [field]: prev[field].filter((_, i) => i !== index)
+      }));
+   }
 
    return (
       <Panel id="form">
@@ -68,11 +100,41 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
                </FormItem>
 
                <FormItem top='Образование'>
-                  <Textarea value={data.education} placeholder="НИТУ МИСИС, Факультет ИТКН, 2024-2026" onChange={(e) => handleInputChange(e, 'education')}/>
+                  {data.education.map((entry, index) => (
+                     <FormLayoutGroup key={index} style={{marginBottom:'12px'}}>
+                        <FormItem top={'Учебное заведение'}>
+                           <Input value={entry.title} placeholder="НИТУ МИСИС" onChange={(e) => handleArrFieldChange('education', index, {title: e.target.value})} />
+                        </FormItem>
+                        <FormItem top={'Детали'}>
+                           <Textarea value={entry.details} placeholder="Факультет | Специализация | XXXX-XXXX" onChange={(e) => handleArrFieldChange('education', index, {details: e.target.value})} />
+                        </FormItem>
+                        {data.education.length > 1 && (
+                           <IconButton onClick={() => removeArrField('education', index)}>
+                              <Icon28DeleteOutline/>
+                           </IconButton>
+                        )}
+                     </FormLayoutGroup>
+                  ))}
+                  <Button mode="tertiary" onClick={() => addArrField('education')} before={<Icon24AddOutline/>} />
                </FormItem>
 
                <FormItem top='Опыт работы'>
-                  <Textarea value={data.experience} placeholder="Компания, должность, xxxx-xxxx" onChange={(e) => handleInputChange(e, 'experience')}/>
+                  {data.experience.map((entry, index) => (
+                     <FormLayoutGroup key={index} style={{marginBottom:'12px'}}>
+                        <FormItem top={'Компания'}>
+                           <Input value={entry.company} placeholder="ООО Ромашка" onChange={(e) => handleArrFieldChange('experience', index, {company: e.target.value})} />
+                        </FormItem>
+                        <FormItem top={'Детали'}>
+                           <Textarea value={entry.details} placeholder="Должность | Обязанности | Достижения" onChange={(e) => handleArrFieldChange('experience', index, {details: e.target.value})} />
+                        </FormItem>
+                        {data.experience.length > 1 && (
+                           <IconButton onClick={() => removeArrField('experience', index)}>
+                              <Icon28DeleteOutline/>
+                           </IconButton>
+                        )}
+                     </FormLayoutGroup>
+                  ))}
+                  <Button mode="tertiary" onClick={() => addArrField('experience')} before={<Icon24AddOutline/>} />
                </FormItem>
 
                <FormItem top='О себе'>
@@ -80,7 +142,19 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
                </FormItem>
 
                <FormItem top='Ссылки на портфолио'>
-                  <Input value={data.portfolio} placeholder="https://" onChange={(e) => handleInputChange(e, 'portfolio')}/>
+                  {data.portfolio.map((link, index) => (
+                     <FormLayoutGroup key={index} style={{marginBottom: '12px'}}>
+                        <FormItem top={'Ссылка'}>
+                           <Input value={link} placeholder="https://" onChange={(e) => handleArrFieldChange('portfolio', index, e.target.value)}/>
+                        </FormItem>
+                        {data.portfolio.length > 1 && (
+                           <IconButton onClick={() => removeArrField('portfolio', index)}>
+                              <Icon28DeleteOutline/>
+                           </IconButton>
+                        )}
+                     </FormLayoutGroup>
+                  ))}
+                  <Button mode="tertiary" onClick={() => addArrField('portfolio')} before={<Icon24AddOutline/>}/>
                </FormItem>
 
             </FormLayoutGroup>

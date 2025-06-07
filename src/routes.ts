@@ -13,6 +13,7 @@ export const DEFAULT_VIEW = 'default_view';
 export const DEFAULT_VIEW_PANELS = {
   WELCOME: 'welcome',
   FORM: 'form',
+  PREVIEW: 'prewiew',
 } as const;
 
 export const routes = RoutesConfig.create([
@@ -20,6 +21,7 @@ export const routes = RoutesConfig.create([
     createView(DEFAULT_VIEW, [
       createPanel(DEFAULT_VIEW_PANELS.WELCOME, '/', []),
       createPanel(DEFAULT_VIEW_PANELS.FORM, '/form', []),
+      createPanel(DEFAULT_VIEW_PANELS.PREVIEW, '/prewiew', []),
     ]),
   ]),
 ]);

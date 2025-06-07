@@ -6,21 +6,13 @@ import { formateDate } from "../utils/formateDate";
 import { Icon24AddOutline, Icon28DeleteOutline } from "@vkontakte/icons";
 import { IUserProps } from "../types/Props";
 import { IResumeData, TArrayFieldValue, IEducation, IExperiance } from "../types/Types";
+import { initialData } from "../constants/ReusmeInitialData";
+import { themeColor } from "../constants/themeColors";
 
-export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
+export const ResumeForm: FC<IUserProps> = ({fetchedUser, appearance}) => {
    const router = useRouteNavigator();
-   const [data, setData] = useState<IResumeData>({
-      name: '',
-      birthDate: '',
-      city: '',
-      position: '',
-      skills: '',
-      education: [{title: '', details: ''}],
-      experience: [{company: '', details: ''}],
-      about: '',
-      portfolio: [''],
-      template: 'minimal'
-   });
+   const { primaryText } = themeColor[appearance];
+   const [data, setData] = useState<IResumeData>(initialData);
 
    useEffect(() => {
       if (fetchedUser){
@@ -67,13 +59,18 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
 
    return (
       <Panel id="form">
+
          <PanelHeader>CV Form</PanelHeader>
+
          <Group style={{padding: '16px'}}>
-            <Headline weight="2" style={{color: '#000000'}}>Создайте ваше резюме</Headline>
+            <Headline weight="2" style={{color: primaryText}}>Создайте ваше резюме</Headline>
+
             <Spacing size={16}/>
+
             <FormItem top="Шаблон резюме">
                <Select value={data.template} onChange={(e) => handleInputChange(e, 'template')} options={[...TemplateOptions]}/>
             </FormItem>
+
             <FormLayoutGroup>
 
                <FormItem top='Имя & Фамилия'>
@@ -112,6 +109,7 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
                         )}
                      </FormLayoutGroup>
                   ))}
+
                   <Button mode="tertiary" onClick={() => addArrField('education')} before={<Icon24AddOutline/>} />
                </FormItem>
 
@@ -155,13 +153,17 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
                </FormItem>
 
             </FormLayoutGroup>
+
             <Spacing size={24}/>
-            <Button size="s" mode="primary" onClick={() => console.log(data)}>
+
+            <Button size="s" mode="primary" onClick={() => router.push('/preview', {state: { data }})}>
                Сохранить
             </Button>
+
             <Button size="s" mode="primary" onClick={() => router.back()}>
                Вернуться назад
             </Button>
+
          </Group>
       </Panel>
    )

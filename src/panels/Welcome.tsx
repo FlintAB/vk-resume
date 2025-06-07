@@ -1,7 +1,7 @@
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { Avatar, Button, Cell, Group, Headline, Panel, PanelHeader, Spacing } from "@vkontakte/vkui";
 import { FC } from "react";
-import { IUserProps } from "../types/FetchedUser";
+import { IUserProps } from "../types/Props";
 
 export const Welcome: FC<IUserProps> = ({fetchedUser}) => {
    const {first_name, photo_200} = {...fetchedUser};
@@ -15,9 +15,13 @@ export const Welcome: FC<IUserProps> = ({fetchedUser}) => {
             <Cell before={photo_200 && <Avatar src={photo_200} />}>
                {`Привет, ${first_name}!`}
             </Cell>
+
             <Spacing size={16} />
+
             <Headline weight="2" style={{color: '#000000'}}>Хочешь создать профессиональное резюме за пару минут?</Headline>
+
             <Spacing size={8} />
+            
             <Button size="s" mode="primary" onClick={() => router.push('/form')}>
                Хочу!
             </Button>

@@ -1,14 +1,11 @@
 import React, { FC, useEffect, useState } from "react";
-import { IUserProps } from "../types/FetchedUser";
-import { IResumeData } from "../types/ResumeForm";
 import { Button, FormItem, FormLayoutGroup, Group, Headline, IconButton, Input, Panel, PanelHeader, Select, Spacing, Textarea } from "@vkontakte/vkui";
 import { TemplateOptions } from "../constants/TemplateOptions";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { formateDate } from "../utils/formateDate";
 import { Icon24AddOutline, Icon28DeleteOutline } from "@vkontakte/icons";
-import { TArrayFieldValue } from "../types/ArrayFieldValue";
-import { IEducation } from "../types/Education";
-import { IExperiance } from "../types/Experiance";
+import { IUserProps } from "../types/Props";
+import { IResumeData, TArrayFieldValue, IEducation, IExperiance } from "../types/Types";
 
 export const ResumeForm: FC<IUserProps> = ({fetchedUser}) => {
    const router = useRouteNavigator();

@@ -7,7 +7,7 @@ import { themeColor } from "../constants/themeColors";
 
 export const Welcome: FC<IUserProps> = ({fetchedUser, appearance}) => {
    const {first_name, photo_200} = {...fetchedUser};
-   const router = useRouteNavigator();
+   const routeNavigator = useRouteNavigator();
    const { primaryText, secondaryText } = themeColor[appearance];
 
    return   (
@@ -29,7 +29,7 @@ export const Welcome: FC<IUserProps> = ({fetchedUser, appearance}) => {
 
             <Spacing size={24}/>
 
-            <Button size="s" mode="primary" onClick={() => router.push('/form')}>
+            <Button size="s" mode="primary" onClick={() => routeNavigator.push('/form')}>
                Хочу!
             </Button>
          </Group>

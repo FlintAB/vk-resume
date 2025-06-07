@@ -26,3 +26,5 @@ export interface IResumeData {
    portfolio: string[];
    template: string;
 }
+
+export type TResumeField = 'education' | 'experience' | 'portfolio';

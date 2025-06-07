@@ -1,16 +1,16 @@
 import React, { FC, useEffect, useState } from "react";
-import { Button, FormItem, FormLayoutGroup, Group, Headline, IconButton, Input, Panel, PanelHeader, Select, Spacing, Textarea } from "@vkontakte/vkui";
+import { Button, FormItem, FormLayoutGroup, Group, Headline, IconButton, Input, Panel, PanelHeader, PanelHeaderBack, Select, Spacing, Textarea } from "@vkontakte/vkui";
 import { TemplateOptions } from "../constants/TemplateOptions";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
 import { formatDate } from "../utils";
 import { Icon24AddOutline, Icon28DeleteOutline } from "@vkontakte/icons";
 import { IUserProps } from "../types/Props";
-import { IResumeData, TArrayFieldValue, IEducation, IExperiance } from "../types/Types";
+import { IResumeData, TArrayFieldValue, IEducation, IExperiance, TResumeField } from "../types/Types";
 import { initialData } from "../constants/ResumeInitialData";
 import { themeColor } from "../constants/themeColors";
 
 export const ResumeForm: FC<IUserProps> = ({fetchedUser, appearance}) => {
-   const router = useRouteNavigator();
+   const routeNavigator = useRouteNavigator();
    const { primaryText } = themeColor[appearance];
    const [data, setData] = useState<IResumeData>(initialData);
 
@@ -29,7 +29,7 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser, appearance}) => {
       setData ({...data, [field]: e.target.value});
    };
 
-   const handleArrFieldChange = (field: 'education' | 'experience' | 'portfolio', index: number, value: TArrayFieldValue) => {
+   const handleArrFieldChange = (field: TResumeField, index: number, value: TArrayFieldValue) => {
       setData((prev) => {
          const updatedArr = [...prev[field]];
          if (field === 'portfolio') {
@@ -43,14 +43,14 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser, appearance}) => {
       });
    };
 
-   const addArrField = (field: 'education' | 'experience' | 'portfolio') => {
+   const addArrField = (field: TResumeField) => {
       setData((prev) => ({
          ...prev,
          [field]: field === 'portfolio' ? [...prev.portfolio, ''] : field === 'education' ? [...prev.education, {title: '', details: ''}] : [...prev.experience, {company: '', details: ''}]
       }));
    };
 
-   const removeArrField = (field: 'education' | 'experience' | 'portfolio', index: number) => {
+   const removeArrField = (field: TResumeField, index: number) => {
       setData((prev) => ({
          ...prev,
          [field]: prev[field].filter((_, i) => i !== index)
@@ -60,7 +60,7 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser, appearance}) => {
    return (
       <Panel id="form">
 
-         <PanelHeader>CV Form</PanelHeader>
+         <PanelHeader before={<PanelHeaderBack onClick={() => routeNavigator.back()}/>}>CV Form</PanelHeader>
 
          <Group style={{padding: '16px'}}>
             <Headline weight="2" style={{color: primaryText}}>Создайте ваше резюме</Headline>
@@ -156,12 +156,8 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser, appearance}) => {
 
             <Spacing size={24}/>
 
-            <Button size="s" mode="primary" onClick={() => router.push('/preview', {state: { data }})}>
+            <Button size="s" mode="primary" onClick={() => routeNavigator.push('/preview', {state: { data }})}>
                Сохранить
-            </Button>
-
-            <Button size="s" mode="primary" onClick={() => router.back()}>
-               Вернуться назад
             </Button>
 
          </Group>

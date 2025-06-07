@@ -4,17 +4,21 @@ import { Document, Packer, Paragraph, TextRun } from "docx";
 import { saveAs } from 'file-saver';
 
 
-export const exportToPDF = (element: HTMLElement, filename: string) => {
+export const exportToPDF = (element: HTMLElement | null, filename: string) => {
       if (!element) {
          console.error('Элемент для экспорта в PDF не найден');
          return;
       }
-      const pdf = new jsPDF();
-      pdf.html(element, {
-         callback: () => pdf.save(`${filename}_resume.pdf`),
-         x: 10,
-         y: 10,
-      });
+      try {
+         const pdf = new jsPDF();
+         pdf.html(element, {
+            callback: () => pdf.save(`${filename}_resume.pdf`),
+            x: 10,
+            y: 10,
+         });
+      } catch (error) {
+         console.error('Ошибка при экспорте документа в формате PDF:', error);
+      }
 };
 
 export const exportToWord = async (resume: IResumeData, filename: string) => {
@@ -78,6 +82,7 @@ export const exportToWord = async (resume: IResumeData, filename: string) => {
 };
 
 export const exportToText = (resume: IResumeData, filename: string) => {
+try {
    const content = `${resume.name}
 ${resume.position}
 ${resume.birthDate} ${resume.city}
@@ -97,4 +102,7 @@ ${resume.portfolio.join('\n')}`;
 
    const blob = new Blob([content], { type: 'text/plain' });
    saveAs(blob, `${filename}_resume.txt`);
+} catch (error) {
+   console.error('Ошибка при экспорте документа в формате TXT:', error);
+}
 };

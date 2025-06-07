@@ -2,11 +2,11 @@ import React, { FC, useEffect, useState } from "react";
 import { Button, FormItem, FormLayoutGroup, Group, Headline, IconButton, Input, Panel, PanelHeader, Select, Spacing, Textarea } from "@vkontakte/vkui";
 import { TemplateOptions } from "../constants/TemplateOptions";
 import { useRouteNavigator } from "@vkontakte/vk-mini-apps-router";
-import { formateDate } from "../utils/formateDate";
+import { formatDate } from "../utils";
 import { Icon24AddOutline, Icon28DeleteOutline } from "@vkontakte/icons";
 import { IUserProps } from "../types/Props";
 import { IResumeData, TArrayFieldValue, IEducation, IExperiance } from "../types/Types";
-import { initialData } from "../constants/ReusmeInitialData";
+import { initialData } from "../constants/ResumeInitialData";
 import { themeColor } from "../constants/themeColors";
 
 export const ResumeForm: FC<IUserProps> = ({fetchedUser, appearance}) => {
@@ -19,7 +19,7 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser, appearance}) => {
          setData((prev) => ({
             ...prev,
             name: `${fetchedUser.first_name} ${fetchedUser.last_name}`,
-            birthDate: fetchedUser.bdate ? formateDate(fetchedUser.bdate) : '',
+            birthDate: fetchedUser.bdate ? formatDate(fetchedUser.bdate) : '',
             city: fetchedUser.city?.title || '',
          }));
       }

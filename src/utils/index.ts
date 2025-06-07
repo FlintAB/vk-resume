@@ -1,3 +1,5 @@
 export { transformVKBridgeAdaptivity } from './transformVKBridgeAdaptivity';
 
-export { formateDate } from './formateDate';
+export { formatDate } from './formatDate';
+
+export { exportToPDF, exportToWord, exportToText } from './exportResume';

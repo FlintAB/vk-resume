@@ -3,9 +3,8 @@ import bridge, { UserInfo } from '@vkontakte/vk-bridge';
 import { View, SplitLayout, SplitCol, ScreenSpinner, ConfigProvider } from '@vkontakte/vkui';
 import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router';
 
-import { Welcome } from './panels';
+import { ResumeForm, Welcome } from './panels';
 import { DEFAULT_VIEW_PANELS } from './routes';
-import { ResumeForm } from './panels/ResumeForm';
 
 export const App = () => {
   const { panel: activePanel = DEFAULT_VIEW_PANELS.WELCOME } = useActiveVkuiLocation();
@@ -20,8 +19,13 @@ export const App = () => {
         setUser(user);
 
       // Получение текущего цвета темы
-      const config = await bridge.send('VKWebAppGetConfig');
+      try {
+        const config = await bridge.send('VKWebAppGetConfig');
         setAppearance(config.appearance || 'light');
+      } catch (configError) {
+        console.warn('Ошибка при подключении к VK config, подключаем стандартное отображение themeColor:', configError);
+      }
+
 
       setPopout(null);
       } catch (error) {

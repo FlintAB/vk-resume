@@ -29,7 +29,7 @@ export const Welcome: FC<IUserProps> = ({fetchedUser, appearance}) => {
 
             <Spacing size={24}/>
 
-            <Button size="s" mode="primary" onClick={() => routeNavigator.push('/form')}>
+            <Button size="s" mode="primary" align="center" appearance="accent" onClick={() => routeNavigator.push('/form')}>
                Хочу!
             </Button>
          </Group>

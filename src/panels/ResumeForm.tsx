@@ -156,7 +156,7 @@ export const ResumeForm: FC<IUserProps> = ({fetchedUser, appearance}) => {
 
             <Spacing size={24}/>
 
-            <Button size="s" mode="primary" onClick={() => routeNavigator.push('/preview', {state: { data }})}>
+            <Button size="s" mode="primary" appearance="positive" onClick={() => routeNavigator.push('/preview', {state: { data }})}>
                Сохранить
             </Button>
 

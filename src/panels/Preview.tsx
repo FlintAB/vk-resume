@@ -4,7 +4,7 @@ import { useLocation, useRouteNavigator } from "@vkontakte/vk-mini-apps-router/d
 import { IResumeData } from "../types/Types";
 import { initialData } from "../constants/ResumeInitialData";
 import { themeColor } from "../constants/themeColors";
-import { Button, Div, FormLayoutGroup, Group, Headline, Panel, PanelHeader, PanelHeaderBack, Spacing, Text, Title } from "@vkontakte/vkui";
+import { Button, ButtonGroup, Div, Group, Headline, Panel, PanelHeader, PanelHeaderBack, Spacing, Text, Title } from "@vkontakte/vkui";
 import { exportToPDF, exportToText, exportToWord } from "../utils";
 import { showErrorSnackBar, showSuccessSnackBar } from "../utils/snackBar";
 
@@ -123,21 +123,21 @@ export const ResumePreview: FC<IUserProps> = ({ appearance }) => {
 
             <Spacing size={24}/>
 
-            <FormLayoutGroup mode="horizontal">
+            <ButtonGroup  mode="horizontal" align="center" gap="m">
 
-               <Button size="s" mode="primary" onClick={handleExportPDF}>
+               <Button size="s" mode="primary" appearance="positive" onClick={handleExportPDF}>
                   Скачать PDF
                </Button>
 
-               <Button size="s" mode="primary" onClick={handleExportWord}>
+               <Button size="s" mode="primary" appearance="positive" onClick={handleExportWord}>
                   Скачать DOCX
                </Button>
 
-               <Button size="s" mode="primary" onClick={handleExportText}>
+               <Button size="s" mode="primary" appearance="positive" onClick={handleExportText}>
                   Скачать TXT
                </Button>
 
-            </FormLayoutGroup>
+            </ButtonGroup>
                {snackBar}
          </Group>
       </Panel>

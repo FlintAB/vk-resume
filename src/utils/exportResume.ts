@@ -2,23 +2,49 @@ import jsPDF from "jspdf";
 import { IResumeData } from "../types/Types";
 import { Document, Packer, Paragraph, TextRun } from "docx";
 import { saveAs } from 'file-saver';
+import html2canvas from "html2canvas";
 
 
-export const exportToPDF = (element: HTMLElement | null, filename: string) => {
-      if (!element) {
-         console.error('Элемент для экспорта в PDF не найден');
-         return;
+export const exportToPDF = async(element: HTMLElement | null, filename: string): Promise<void> => {
+   if (!element) {
+      console.error('Элемент для экспорта в PDF не найден');
+      return Promise.reject(new Error('Элемент не найден'));
+   }
+   try {
+      const canvas = await html2canvas(element, {
+         scale: 2,
+         useCORS: true,
+         logging: false,
+         backgroundColor: null,
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+         unit: 'mm',
+         format: 'a4',
+      });
+
+      const imgWidth = 210;
+      const pageHeight = 297;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+
+      while (heightLeft > pageHeight) {
+         position -= pageHeight;
+         heightLeft -= pageHeight;
+         pdf.addPage();
+         pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       }
-      try {
-         const pdf = new jsPDF();
-         pdf.html(element, {
-            callback: () => pdf.save(`${filename}_resume.pdf`),
-            x: 10,
-            y: 10,
-         });
-      } catch (error) {
-         console.error('Ошибка при экспорте документа в формате PDF:', error);
-      }
+
+      pdf.save(`${filename}_resume.pdf`);
+      return Promise.resolve();
+   } catch (error) {
+      console.error('Ошибка экспорта в PDF:', error);
+      return Promise.reject(error);
+   }
 };
 
 export const exportToWord = async (resume: IResumeData, filename: string) => {

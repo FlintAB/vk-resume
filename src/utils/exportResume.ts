@@ -13,8 +13,8 @@ export const exportToPDF = (element: HTMLElement | null, filename: string) => {
          const pdf = new jsPDF();
          pdf.html(element, {
             callback: () => pdf.save(`${filename}_resume.pdf`),
-            x: 1,
-            y: 1,
+            x: 10,
+            y: 10,
          });
       } catch (error) {
          console.error('Ошибка при экспорте документа в формате PDF:', error);

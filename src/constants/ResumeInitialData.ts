@@ -1,4 +1,6 @@
-export const initialData = {
+import { IResumeData } from "../types/Types";
+
+export const initialData: IResumeData = {
          name: '',
          birthDate: '',
          city: '',

@@ -3,7 +3,7 @@ import bridge, { UserInfo } from '@vkontakte/vk-bridge';
 import { View, SplitLayout, SplitCol, ScreenSpinner, ConfigProvider } from '@vkontakte/vkui';
 import { useActiveVkuiLocation } from '@vkontakte/vk-mini-apps-router';
 
-import { ResumeForm, Welcome } from './panels';
+import { ResumeForm, ResumePreview, Welcome } from './panels';
 import { DEFAULT_VIEW_PANELS } from './routes';
 
 export const App = () => {
@@ -51,6 +51,7 @@ export const App = () => {
           <View activePanel={activePanel}>
             <Welcome id={DEFAULT_VIEW_PANELS.WELCOME} fetchedUser={fetchedUser} appearance={appearance}/>
             <ResumeForm id={DEFAULT_VIEW_PANELS.FORM} fetchedUser={fetchedUser} appearance={appearance}/>
+            <ResumePreview id={DEFAULT_VIEW_PANELS.PREVIEW} fetchedUser={fetchedUser} appearance={appearance}/>
           </View>
         </SplitCol>
         {popout}
